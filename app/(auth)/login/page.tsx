@@ -1,17 +1,21 @@
-
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { account } from '@/lib/appwrite'
+import { useAuth } from '@/components/AuthContext'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { checkAuth } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const redirectUrl = searchParams.get('redirect') || '/'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,10 +23,21 @@ export default function LoginPage() {
     setError('')
 
     try {
+      // Delete any existing session first
+      try {
+        await account.deleteSession('current')
+      } catch (e) {
+        // No existing session
+      }
+
       await account.createEmailPasswordSession(email, password)
-      router.push('/')
+      await checkAuth()
+      
+      // Redirect to the original page or home
+      router.push(decodeURIComponent(redirectUrl))
     } catch (err: any) {
-      setError(err.message || 'Failed to login')
+      console.error('Login error:', err)
+      setError(err.message || 'Failed to login. Please check your credentials.')
     } finally {
       setLoading(false)
     }
@@ -41,7 +56,7 @@ export default function LoginPage() {
           <p className="mt-2 text-sm text-gray-600">
             Or{' '}
             <Link
-              href="/register"
+              href={`/register${redirectUrl !== '/' ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
               className="font-medium text-primary-600 hover:text-primary-500"
             >
               create a new account

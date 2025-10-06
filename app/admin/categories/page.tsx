@@ -4,9 +4,11 @@
 import { useState, useEffect } from 'react'
 import { databases, ID } from '@/lib/appwrite'
 import { api } from '@/lib/api'
-import { slugify } from '@/lib/utils'
+import { getImageUrl, slugify } from '@/lib/utils'
 import { Plus, Edit, Trash2 } from 'lucide-react'
 import type { Category } from '@/types'
+import ImageUpload from '@/components/ImageUpload'
+import Image from 'next/image'
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -16,6 +18,7 @@ export default function AdminCategoriesPage() {
     name: '',
     slug: '',
     description: '',
+    imageId: '',
   })
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function AdminCategoriesPage() {
         await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), formData)
       }
 
-      setFormData({ name: '', slug: '', description: '' })
+      setFormData({ name: '', slug: '', description: '', imageId: '' })
       setShowForm(false)
       setEditingId(null)
       loadCategories()
@@ -55,6 +58,7 @@ export default function AdminCategoriesPage() {
       name: category.name,
       slug: category.slug,
       description: category.description || '',
+      imageId: category.imageId || '',
     })
     setEditingId(category.$id)
     setShowForm(true)
@@ -90,7 +94,7 @@ export default function AdminCategoriesPage() {
         <h1 className="text-3xl font-bold">Categories</h1>
         <button
           onClick={() => {
-            setFormData({ name: '', slug: '', description: '' })
+            setFormData({ name: '', slug: '', description: '', imageId: '' })
             setEditingId(null)
             setShowForm(true)
           }}
@@ -140,6 +144,22 @@ export default function AdminCategoriesPage() {
                 rows={3}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">category Image</label>
+              <ImageUpload
+                onUpload={fileId => setFormData(prev => ({ ...prev, imageId: fileId }))}
+              />
+              {formData.imageId && (
+                <div className="mt-2 relative w-32 h-32">
+                  <Image
+                    src={getImageUrl(formData.imageId)}
+                    alt="Category Image"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
             </div>
             <div className="flex gap-4">
               <button

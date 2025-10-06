@@ -1,4 +1,3 @@
-
 import { CartProvider } from '@/components/CartContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'

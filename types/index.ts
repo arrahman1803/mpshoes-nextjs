@@ -53,6 +53,8 @@ export interface Order {
   fullName: string;
   address: string;
   city: string;
+  state: string;
+  country: string;
   postalCode: string;
   phone: string;
   totalAmount: number;

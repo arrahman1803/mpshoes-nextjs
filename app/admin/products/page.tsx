@@ -1,4 +1,3 @@
-
 import Link from 'next/link'
 import { api } from '@/lib/api'
 import { Edit, Plus } from 'lucide-react'
@@ -8,12 +7,12 @@ export default async function AdminProductsPage() {
   const products = await api.getProducts()
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
+    <div className="px-4 sm:px-6 lg:px-8 py-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Products</h1>
         <Link
           href="/admin/products/new"
-          className="bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 flex items-center gap-2"
+          className="bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 flex items-center gap-2 mt-4 sm:mt-0"
         >
           <Plus size={20} />
           Add Product
@@ -21,7 +20,7 @@ export default async function AdminProductsPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <table className="w-full">
+        <table className="w-full table-auto">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
