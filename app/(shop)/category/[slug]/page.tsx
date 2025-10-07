@@ -6,8 +6,10 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getImageUrl } from '@/lib/utils'
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
-  const category = await api.getCategoryBySlug(params.slug)
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const category = await api.getCategoryBySlug(slug)
   
   if (!category) {
     notFound()

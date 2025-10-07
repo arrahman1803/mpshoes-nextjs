@@ -5,8 +5,15 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { account } from '@/lib/appwrite'
 import { useAuth } from '@/components/AuthContext'
-
+import { Suspense } from 'react'
 export default function LoginPage() {
+   <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+}
+
+function LoginForm(){
+  
   const router = useRouter()
   const searchParams = useSearchParams()
   const { checkAuth } = useAuth()

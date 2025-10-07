@@ -48,7 +48,9 @@ export default function AdminOrdersPage() {
         ORDERS_COLLECTION,
         // [Query.orderDesc('createdAt'), Query.limit(100)]
       )
-      setOrders(response.documents as Order[])
+      // setOrders(response.documents as Order[])
+    setOrders(response.documents as unknown as Order[])
+
     } catch (error) {
       console.error('Failed to load orders:', error)
       alert('Failed to load orders')
@@ -64,7 +66,9 @@ export default function AdminOrdersPage() {
         ORDER_ITEMS_COLLECTION,
         [Query.equal('orderId', orderId)]
       )
-      setOrderItems(response.documents as OrderItem[])
+      // setOrderItems(response.documents as OrderItem[])
+      setOrderItems(response.documents as unknown as OrderItem[])
+
     } catch (error) {
       console.error('Failed to load order items:', error)
     }

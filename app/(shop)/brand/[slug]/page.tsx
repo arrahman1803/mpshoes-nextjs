@@ -2,8 +2,11 @@
 import { api } from '@/lib/api'
 import ProductCard from '@/components/ProductCard'
 
-export default async function BrandPage({ params }: { params: { slug: string } }) {
-  const brand = await api.getBrandBySlug(params.slug)
+export default async function BrandPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+
+
+  const brand = await api.getBrandBySlug(slug)
   
   if (!brand) {
     return (

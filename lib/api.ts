@@ -21,7 +21,7 @@ export const orderApi = {
       ORDERS_COLLECTION,
       // [Query.orderDesc('createdAt'), Query.limit(limit)]
     )
-    return response.documents as Order[]
+    return response.documents as unknown as Order[]
   },
 
   // Get order by ID
@@ -31,7 +31,7 @@ export const orderApi = {
       ORDERS_COLLECTION,
       orderId
     )
-    return order as Order
+    return order as unknown as Order
   },
 
   // Get orders by user
@@ -42,7 +42,7 @@ export const orderApi = {
       [Query.equal('userId', userId) ]
     // Query.orderDesc('createdAt')
     )
-    return response.documents as Order[]
+    return response.documents as unknown as Order[]
   },
 
   // Get orders by status
@@ -52,7 +52,7 @@ export const orderApi = {
       ORDERS_COLLECTION,
       [Query.equal('status', status), Query.orderDesc('createdAt')]
     )
-    return response.documents as Order[]
+    return response.documents as unknown as Order[]
   },
 
   // Create order
@@ -66,7 +66,7 @@ export const orderApi = {
         createdAt: new Date().toISOString(),
       }
     )
-    return order as Order
+    return order as unknown as Order
   },
 
   // Update order status
@@ -77,7 +77,7 @@ export const orderApi = {
       orderId,
       { status }
     )
-    return order as Order
+    return order as unknown as Order
   },
 
   // Get order items
@@ -87,7 +87,7 @@ export const orderApi = {
       ORDER_ITEMS_COLLECTION,
       [Query.equal('orderId', orderId)]
     )
-    return response.documents as OrderItem[]
+    return response.documents as unknown as OrderItem[]
   },
 
   // Create order item
@@ -98,7 +98,7 @@ export const orderApi = {
       ID.unique(),
       itemData
     )
-    return item as OrderItem
+    return item as unknown as OrderItem
   },
 
   // Update variant quantity (decrease after order)
@@ -146,7 +146,7 @@ export const api = {
       PRODUCTS_COLLECTION,
       [Query.equal('isActive', true), Query.limit(limit)]
     )
-    return response.documents as Product[]
+    return response.documents as unknown as Product[]
   },
 
   async getProductBySlug(slug: string) {
@@ -155,7 +155,7 @@ export const api = {
       PRODUCTS_COLLECTION,
       [Query.equal('slug', slug)]
     )
-    return response.documents[0] as Product | undefined
+    return response.documents[0] as unknown as Product | undefined
   },
 
   async getProductsByCategory(categoryId: string) {
@@ -164,7 +164,7 @@ export const api = {
       PRODUCTS_COLLECTION,
       [Query.equal('categoryId', categoryId), Query.equal('isActive', true)]
     )
-    return response.documents as Product[]
+    return response.documents as unknown as Product[]
   },
 
   async getProductsByBrand(brandId: string) {
@@ -173,7 +173,7 @@ export const api = {
       PRODUCTS_COLLECTION,
       [Query.equal('brandId', brandId), Query.equal('isActive', true)]
     )
-    return response.documents as Product[]
+    return response.documents as unknown as Product[]
   },
 
   async getFeaturedProducts() {
@@ -182,7 +182,7 @@ export const api = {
       PRODUCTS_COLLECTION,
       [Query.equal('featured', true), Query.equal('isActive', true)]
     )
-    return response.documents as Product[]
+    return response.documents as unknown as Product[]
   },
 
   // Variants
@@ -192,7 +192,7 @@ export const api = {
       VARIANTS_COLLECTION,
       [Query.equal('productId', productId)]
     )
-    return response.documents as Variant[]
+    return response.documents as unknown as Variant[]
   },
 
   // Images
@@ -202,7 +202,7 @@ export const api = {
       IMAGES_COLLECTION,
       [Query.equal('productId', productId), Query.orderAsc('order')]
     )
-    return response.documents as ProductImage[]
+    return response.documents as unknown as ProductImage[]
   },
 
   // Categories
@@ -211,7 +211,7 @@ export const api = {
       DATABASE_ID,
       CATEGORIES_COLLECTION
     )
-    return response.documents as Category[]
+    return response.documents as unknown as Category[]
   },
 
   async getCategoryBySlug(slug: string) {
@@ -220,7 +220,7 @@ export const api = {
       CATEGORIES_COLLECTION,
       [Query.equal('slug', slug)]
     )
-    return response.documents[0] as Category | undefined
+    return response.documents[0] as unknown as Category | undefined
   },
 
   // Brands
@@ -229,7 +229,7 @@ export const api = {
       DATABASE_ID,
       BRANDS_COLLECTION
     )
-    return response.documents as Brand[]
+    return response.documents as unknown as Brand[]
   },
 
   async getBrandBySlug(slug: string) {
@@ -238,7 +238,7 @@ export const api = {
       BRANDS_COLLECTION,
       [Query.equal('slug', slug)]
     )
-    return response.documents[0] as Brand | undefined
+    return response.documents[0] as unknown as Brand | undefined
   },
 
   // Storage
@@ -269,7 +269,7 @@ async searchProducts(query: string) {
         Query.limit(50)
       ]
     )
-    return response.documents as Product[]
+    return response.documents as unknown as Product[]
   } catch (error) {
     console.error('Search error:', error)
     // Fallback to client-side filtering if search fails

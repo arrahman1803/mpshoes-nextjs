@@ -57,7 +57,7 @@ export default function EditProductPage() {
         databases.getDocument(DATABASE_ID, PRODUCTS_COLLECTION, params.id as string),
       ])
 
-      const product = productData as Product
+      const product = productData as unknown as Product
       setProduct(product)
       setCategories(categoriesData)
       setBrands(brandsData)
