@@ -7,11 +7,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'fra.cloud.appwrite.io',
+        hostname: 'cloud.appwrite.io',
         pathname: '/v1/storage/**',
       },
     ],
-  }
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
+  },
 };
 
 export default nextConfig;
