@@ -1,13 +1,12 @@
-
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { AuthProvider } from '../components/AuthContext'
+import { AuthProvider } from '@/components/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MPShoes - Quality Footwear Store',
+  title: 'MP Shoes - Quality Footwear Store',
   description: 'Your trusted destination for quality footwear',
 }
 
@@ -18,9 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <meta name="robots" content="noindex, nofollow" />
+      <head>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
       <body className={inter.className}>
-         <AuthProvider>
+        <AuthProvider>
           {children}
         </AuthProvider>
       </body>

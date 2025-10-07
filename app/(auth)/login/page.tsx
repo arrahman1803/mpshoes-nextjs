@@ -1,19 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { account } from '@/lib/appwrite'
 import { useAuth } from '@/components/AuthContext'
-import { Suspense } from 'react'
-export default function LoginPage() {
-   <Suspense fallback={<div>Loading...</div>}>
-      <LoginForm />
-    </Suspense>
-}
 
-function LoginForm(){
-  
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { checkAuth } = useAuth()
@@ -34,7 +27,7 @@ function LoginForm(){
       try {
         await account.deleteSession('current')
       } catch (e) {
-        // No existing session
+        // No existing session, continue
       }
 
       await account.createEmailPasswordSession(email, password)
@@ -142,5 +135,20 @@ function LoginForm(){
         </form>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }

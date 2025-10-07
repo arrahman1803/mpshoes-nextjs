@@ -1,13 +1,15 @@
-
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { account, ID } from '@/lib/appwrite'
+import { useAuth } from '@/components/AuthContext'
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { checkAuth } = useAuth()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +18,8 @@ export default function RegisterPage() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const redirectUrl = searchParams.get('redirect') || '/'
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -42,6 +46,7 @@ export default function RegisterPage() {
     }
 
     try {
+      // Create the account
       await account.create(
         ID.unique(),
         formData.email,
@@ -49,9 +54,14 @@ export default function RegisterPage() {
         formData.name
       )
       
+      // Log in the user
       await account.createEmailPasswordSession(formData.email, formData.password)
-      router.push('/')
+      await checkAuth()
+      
+      // Redirect to the original page or home
+      router.push(decodeURIComponent(redirectUrl))
     } catch (err: any) {
+      console.error('Registration error:', err)
       setError(err.message || 'Failed to create account')
     } finally {
       setLoading(false)
@@ -71,7 +81,7 @@ export default function RegisterPage() {
           <p className="mt-2 text-sm text-gray-600">
             Already have an account?{' '}
             <Link
-              href="/login"
+              href={`/login${redirectUrl !== '/' ? `?redirect=${encodeURIComponent(redirectUrl)}` : ''}`}
               className="font-medium text-primary-600 hover:text-primary-500"
             >
               Sign in
@@ -187,5 +197,20 @@ export default function RegisterPage() {
         </form>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <RegisterForm />
+    </Suspense>
   )
 }
