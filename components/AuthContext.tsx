@@ -128,8 +128,9 @@ export function ProtectedRoute({
     if (!loading) {
       if (!user) {
         // Redirect to login with return URL
-        const redirectUrl = encodeURIComponent(pathname)
-        router.push(`/login?redirect=${redirectUrl}`)
+        // const redirectUrl = encodeURIComponent(pathname)
+        // router.push(`/login?redirect=${redirectUrl}`)
+        router.push('/login')
       } else if (requireAdmin && !user.isAdmin) {
         // Non-admin trying to access admin route
         console.warn('Access denied: Admin privileges required')
