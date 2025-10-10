@@ -110,7 +110,7 @@ export default function AdminOrdersPage() {
       ['Order ID', 'Date', 'Customer', 'Email', 'Phone', 'Status', 'Amount'].join(','),
       ...filteredOrders.map(order => [
         order.$id.slice(-8),
-        new Date(order.createdAt).toLocaleDateString(),
+        new Date(order.$createdAt).toLocaleDateString(),
         order.fullName,
         order.email,
         order.phone,
@@ -261,7 +261,7 @@ export default function AdminOrdersPage() {
                       <p className="text-xs sm:text-sm text-gray-600">{order.email}</p>
                       <p className="text-xs text-gray-500">{order.phone}</p>
                       <p className="text-xs text-gray-500 mt-1">
-                        {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                        {new Date(order.$createdAt).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'short',
                           year: 'numeric',
@@ -304,7 +304,7 @@ export default function AdminOrdersPage() {
                   <p><span className="font-medium">Name:</span> {selectedOrder.fullName}</p>
                   <p><span className="font-medium">Email:</span> {selectedOrder.email}</p>
                   <p><span className="font-medium">Phone:</span> {selectedOrder.phone}</p>
-                  <p><span className="font-medium">Date:</span> {new Date(selectedOrder.createdAt).toLocaleString('en-IN')}</p>
+                  <p><span className="font-medium">Date:</span> {new Date(selectedOrder.$createdAt).toLocaleString('en-IN')}</p>
                 </div>
               </div>
 

@@ -19,7 +19,7 @@ export const orderApi = {
     const response = await databases.listDocuments(
       DATABASE_ID,
       ORDERS_COLLECTION,
-      // [Query.orderDesc('createdAt'), Query.limit(limit)]
+      [Query.orderDesc('$createdAt'), Query.limit(limit)]
     )
     return response.documents as unknown as Order[]
   },
@@ -39,8 +39,9 @@ export const orderApi = {
     const response = await databases.listDocuments(
       DATABASE_ID,
       ORDERS_COLLECTION,
-      [Query.equal('userId', userId) ]
-    // Query.orderDesc('createdAt')
+      [Query.equal('userId', userId),
+      Query.orderDesc('$createdAt') ]
+    
     )
     return response.documents as unknown as Order[]
   },
@@ -50,13 +51,13 @@ export const orderApi = {
     const response = await databases.listDocuments(
       DATABASE_ID,
       ORDERS_COLLECTION,
-      [Query.equal('status', status), Query.orderDesc('createdAt')]
+      [Query.equal('status', status), Query.orderDesc('$createdAt')]
     )
     return response.documents as unknown as Order[]
   },
 
   // Create order
-  async createOrder(orderData: Omit<Order, '$id' | 'createdAt'>) {
+  async createOrder(orderData: Omit<Order, '$id' | '$createdAt'>) {
     const order = await databases.createDocument(
       DATABASE_ID,
       ORDERS_COLLECTION,

@@ -59,7 +59,9 @@ export interface Order {
   phone: string;
   totalAmount: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  createdAt: string;
+  // createdAt: string;
+  $createdAt: string;
+  $updatedAt?: string;
 }
 
 export interface OrderItem {

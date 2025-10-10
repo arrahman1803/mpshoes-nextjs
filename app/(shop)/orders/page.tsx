@@ -52,7 +52,7 @@ function OrdersPageContent() {
       
       // Sort orders by creation date (newest first)
       const sortedOrders = data.sort((a, b) => 
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
       )
       
       // Load order items for each order
@@ -209,7 +209,7 @@ function OrdersPageContent() {
                     <span className="font-mono text-sm font-semibold">#{order.$id.slice(0, 8).toUpperCase()}</span>
                   </div>
                   <div className="text-sm text-gray-600">
-                    {new Date(order.createdAt).toLocaleDateString('en-US', {
+                    {new Date(order.$createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
